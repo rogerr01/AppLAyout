@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Clients</string>
+    <string name="codiText">Codi:</string>
+    <string name="nomText">Nom:</string>
+    <string name="cognomsText">Cognoms:</string>
+    <string name="telefonText">Telefon:</string>
+    <string name="mailText">E-mail:</string>
+    <string name="genereText">Gènere:</string>
+    <string name="homeText">Home</string>
+    <string name="donaText">Dona</string>
+    <string name="tgButtonActivar">Activar</string>
+    <string name="tgButtonDesactivar">Desactivar</string>
+    <string name="menuItemSortir">Sortir</string>
+</resources>
