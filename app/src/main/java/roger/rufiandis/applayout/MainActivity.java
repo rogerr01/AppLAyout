@@ -2,7 +2,8 @@ package roger.rufiandis.applayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,9 +33,9 @@ public class MainActivity extends AppCompatActivity
     RadioButton rbHome;
     RadioButton rbDona;
     ToggleButton tbActivar;
-    Button btCancelar;
-    Button btGuardar;
-    Button btNou;
+    Button btEsborrar;
+    Button btTargeta;
+    Button btRegistrar;
 
 
     @Override
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // carregarElements();
+        carregarElements();
+        generarNovaId();
 
     }
 
@@ -69,9 +71,9 @@ public class MainActivity extends AppCompatActivity
         rbHome = findViewById(R.id.rbHome);
         rbDona = findViewById(R.id.rbDona);
         tbActivar = findViewById(R.id.tbActivar);
-        btCancelar = findViewById(R.id.btCancelar);
-//        btGuardar = findViewById(R.id.btGuardar);
-  //      btNou = findViewById(R.id.btNou);
+        btEsborrar = findViewById(R.id.btEsborrar);
+        btTargeta = findViewById(R.id.btTargeta);
+        btRegistrar = findViewById(R.id.btRegistrar);
     }
 
 
@@ -85,10 +87,8 @@ public class MainActivity extends AppCompatActivity
 
     // Accions dels botons
 
-    public void nouRegistre(View view)
+    public void esborrar(View view)
     {
-        // Nova ID
-        generarNovaId();
 
         // Esborrar camps
         tfNom.setText("");
@@ -102,19 +102,85 @@ public class MainActivity extends AppCompatActivity
     public void activar(View view)
     {
         tbActivar.setBackgroundColor(tbActivar.isChecked() ? Color.RED : Color.GREEN);
+    }
+
+
+    // Genera la targeta de client
+
+    public void crearTargeta(View v)
+    {
+
+      try {
+            Intent i = new Intent(this, Targeta.class);
+
+            String codi = tfCodi.getText().toString();
+            String nom = tfNom.getText().toString();
+            String cognoms = tfCognoms.getText().toString();
+            int telefon = Integer.parseInt(tfTelefon.getText().toString());
+            String email = tfMail.getText().toString();
+            String genere = rbHome.isChecked() ? "Home" : "Dona";
+
+            i.putExtra("codi", codi);
+            i.putExtra("nom", nom);
+            i.putExtra("cognoms", cognoms);
+            i.putExtra("telefon", telefon);
+            i.putExtra("email", email);
+            i.putExtra("genere", genere);
+
+            startActivity(i);
+
+        } catch (Exception e) {
+
+          new MessageBox().show("Error","S'han d'emplenar tots els camps amb un format valid");
+
+      }
 
     }
 
+    public void email (View v)
+    {
+        try
+        {
+            Intent i = new Intent(this, EmailActivity.class);
+            i.putExtra("email",tfMail.getText());
+            startActivity(i);
+        }
+        catch (Exception e)
+        {
+            new MessageBox().show("Error",
+                    "S'ha d'introduir un email");
+        }
+    }
 
     public void guardar(View v)
     {
-
-        Intent i = new Intent(this , SegonaActivity.class);
-        i.putExtra("codi",tfCodi.getText().toString());
-
-        startActivity(i);
-
+        new MessageBox().show("Client guardat","S'ha guardat el registre del client " + tfCodi.getText());
+        esborrar(v);
     }
+
+    public class MessageBox
+    {
+        void show(String title, String message)
+        {
+            dialog = new AlertDialog.Builder(MainActivity.this) // Pass a reference to your main
+                    // activity here
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i)
+                        {
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+        }
+
+        private AlertDialog dialog;
+    }
+
+
 
 }
 

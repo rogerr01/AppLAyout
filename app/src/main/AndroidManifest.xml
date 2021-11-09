@@ -10,7 +10,10 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.AppLAyout">
         <activity
-                android:name=".SegonaActivity"
+                android:name=".EmailActivity"
+                android:exported="true" />
+        <activity
+                android:name=".Targeta"
                 android:exported="true" />
         <activity
                 android:name=".MainActivity"
