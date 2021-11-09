@@ -9,12 +9,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
+import androidx.appcompat.widget.Toolbar;
+
 
 import java.util.Random;
 
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         carregarElements();
         generarNovaId();
 
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity
         btEsborrar = findViewById(R.id.btEsborrar);
         btTargeta = findViewById(R.id.btTargeta);
         btRegistrar = findViewById(R.id.btRegistrar);
+
     }
 
 
@@ -102,6 +110,13 @@ public class MainActivity extends AppCompatActivity
     public void activar(View view)
     {
         tbActivar.setBackgroundColor(tbActivar.isChecked() ? Color.RED : Color.GREEN);
+    }
+
+
+    public void inici(MenuItem m)
+    {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
     }
 
 
@@ -178,6 +193,11 @@ public class MainActivity extends AppCompatActivity
         }
 
         private AlertDialog dialog;
+    }
+
+    public void sortir(MenuItem v)
+    {
+        System.exit(0);
     }
 
 

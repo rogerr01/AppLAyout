@@ -9,7 +9,8 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_segona.xml" value="0.17307692307692307" />
         <entry key="app/src/main/res/layout/activity_targeta.xml" value="0.25" />
-        <entry key="app/src/main/res/menu/main_menu.xml" value="0.17307692307692307" />
+        <entry key="app/src/main/res/layout/tool_bar.xml" value="0.21197916666666666" />
+        <entry key="app/src/main/res/menu/main_menu.xml" value="0.25" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>

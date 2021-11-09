@@ -11,4 +11,5 @@
     <string name="tgButtonActivar">Activar</string>
     <string name="tgButtonDesactivar">Desactivar</string>
     <string name="menuItemSortir">Sortir</string>
+    <string name="inici">Inici</string>
 </resources>
