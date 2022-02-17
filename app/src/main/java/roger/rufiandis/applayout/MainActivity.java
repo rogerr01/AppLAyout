@@ -1,14 +1,19 @@
 package roger.rufiandis.applayout;
 
+import static roger.rufiandis.applayout.ControladorBD.DATABASE_NAME;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +21,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ToggleButton;
-import androidx.appcompat.widget.Toolbar;
-
-
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -46,25 +47,11 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         carregarElements();
-        generarNovaId();
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
     }
 
 
-    public void carregarElements()
+    public void carregarElements ()
     {
         // Camps de text
         tfCodi = findViewById(R.id.tfCodi);
@@ -79,25 +66,14 @@ public class MainActivity extends AppCompatActivity
         rbDona = findViewById(R.id.rbDona);
         tbActivar = findViewById(R.id.tbActivar);
         btEsborrar = findViewById(R.id.btEsborrar);
-        btTargeta = findViewById(R.id.btTargeta);
+        btTargeta = findViewById(R.id.btEditar);
         btRegistrar = findViewById(R.id.btRegistrar);
-
-    }
-
-
-    // Accions generals
-
-    public void generarNovaId()
-    {
-        String novaId = String.valueOf(new Random().nextInt(9999)) + "ABC";
-        tfCodi.setText(novaId);
     }
 
     // Accions dels botons
 
-    public void esborrar(View view)
+    public void esborrar (View view)
     {
-
         // Esborrar camps
         tfNom.setText("");
         tfCognoms.setText("");
@@ -107,95 +83,107 @@ public class MainActivity extends AppCompatActivity
         tbActivar.setChecked(false);
     }
 
-    public void activar(View view)
+    public void activar (View view)
     {
         tbActivar.setBackgroundColor(tbActivar.isChecked() ? Color.RED : Color.GREEN);
     }
 
 
-    public void inici(MenuItem m)
+    public void inici (MenuItem m)
     {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 
 
-    // Genera la targeta de client
-
-    public void crearTargeta(View v)
+    public void editar (View v)
     {
 
-      try {
-            Intent i = new Intent(this, Targeta.class);
-
-            String codi = tfCodi.getText().toString();
-            String nom = tfNom.getText().toString();
-            String cognoms = tfCognoms.getText().toString();
-            int telefon = Integer.parseInt(tfTelefon.getText().toString());
-            String email = tfMail.getText().toString();
-            String genere = rbHome.isChecked() ? "Home" : "Dona";
-
-            i.putExtra("codi", codi);
-            i.putExtra("nom", nom);
-            i.putExtra("cognoms", cognoms);
-            i.putExtra("telefon", telefon);
-            i.putExtra("email", email);
-            i.putExtra("genere", genere);
-
-            startActivity(i);
-
-        } catch (Exception e) {
-
-          new MessageBox().show("Error","S'han d'emplenar tots els camps amb un format valid");
-
-      }
 
     }
 
-    public void email (View v)
+    public void buscar (View v)
     {
-        try
-        {
-            Intent i = new Intent(this, EmailActivity.class);
-            i.putExtra("email",tfMail.getText());
-            startActivity(i);
+        String id = tfCodi.getText().toString();
+
+        SQLiteDatabase db = new ControladorBD(this).getWritableDatabase();
+
+        Cursor c = db.rawQuery("SELECT " +
+                EstructuraBD.COLUMN_NAME1 + EstructuraBD.COMMA_SEP +
+                EstructuraBD.COLUMN_NAME2 + EstructuraBD.COMMA_SEP +
+                EstructuraBD.COLUMN_NAME3 + EstructuraBD.COMMA_SEP +
+                EstructuraBD.COLUMN_NAME4 + EstructuraBD.COMMA_SEP +
+                EstructuraBD.COLUMN_NAME5 + EstructuraBD.COMMA_SEP +
+                EstructuraBD.COLUMN_NAME6 + EstructuraBD.COMMA_SEP +
+                EstructuraBD.COLUMN_NAME7 +
+                " FROM " + EstructuraBD.TABLE_NAME +
+                " WHERE " + EstructuraBD.COLUMN_NAME1 + " = " + id
+                , null);
+
+        if (c.moveToFirst()){
+            do {
+
+                tfCodi.setText(c.getString(0));
+                tfNom.setText(c.getString(1));
+                tfCognoms.setText(c.getString(2));
+                tfTelefon.setText(c.getString(3));
+                tfMail.setText(c.getString(4));
+                rbHome.setSelected(c.getString(5).equals("Home"));
+                tbActivar.setSelected(c.getString(6).equals("true"));
+
+            } while(c.moveToNext());
         }
-        catch (Exception e)
-        {
-            new MessageBox().show("Error",
-                    "S'ha d'introduir un email");
-        }
+
+        c.close();
+        db.close();
+
     }
 
-    public void guardar(View v)
+
+
+    public void guardar (View v)
     {
-        new MessageBox().show("Client guardat","S'ha guardat el registre del client " + tfCodi.getText());
+        String codi = tfCodi.getText().toString();
+        String nom = tfNom.getText().toString();
+        String cognoms = tfCognoms.getText().toString();
+        int telefon = Integer.parseInt(tfTelefon.getText().toString());
+        String email = tfMail.getText().toString();
+        String genere = rbHome.isChecked() ? "Home" : "Dona";
+        boolean actiu = tbActivar.isChecked();
+
+        SQLiteDatabase db = new ControladorBD(this).getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(EstructuraBD.COLUMN_NAME1, codi);
+        values.put(EstructuraBD.COLUMN_NAME2, nom);
+        values.put(EstructuraBD.COLUMN_NAME3, cognoms);
+        values.put(EstructuraBD.COLUMN_NAME4, telefon);
+        values.put(EstructuraBD.COLUMN_NAME5, email);
+        values.put(EstructuraBD.COLUMN_NAME6, genere);
+        values.put(EstructuraBD.COLUMN_NAME7, actiu);
+
+        db.insert(DATABASE_NAME, null, values);
+
+        new MessageBox().show("S'ha guardat el registre del client " + tfCodi.getText());
+
         esborrar(v);
     }
 
     public class MessageBox
     {
-        void show(String title, String message)
+        void show (String message)
         {
-            dialog = new AlertDialog.Builder(MainActivity.this) // Pass a reference to your main
-                    // activity here
-                    .setTitle(title)
+            dialog = new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Client guardat")
                     .setMessage(message)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i)
-                        {
-                            dialog.cancel();
-                        }
-                    })
+                    .setPositiveButton("OK", (dialogInterface, i) -> dialog.cancel())
                     .show();
         }
 
         private AlertDialog dialog;
     }
 
-    public void sortir(MenuItem v)
+    public void sortir (MenuItem v)
     {
         System.exit(0);
     }

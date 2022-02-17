@@ -16,10 +16,6 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            <include
-                    layout="@layout/tool_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
 
             <LinearLayout
                     android:orientation="horizontal"
@@ -50,8 +46,6 @@
                 <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="48dp"
-                        android:inputType="none"
-                        android:enabled="false"
                         android:ems="10"
                         android:id="@+id/tfCodi"
                         android:layout_weight="1"
@@ -60,7 +54,8 @@
                         android:layout_marginRight="10dp"
                         android:textAlignment="center"
                         android:textSize="20sp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:inputType="text" />
 
             </LinearLayout>
 
@@ -290,7 +285,7 @@
                     android:layout_marginRight="10dp">
 
                 <Button
-                        android:layout_width="wrap_content"
+                        android:layout_width="78dp"
                         android:layout_height="80dp"
                         android:id="@+id/btEsborrar"
                         android:layout_weight="1"
@@ -307,9 +302,9 @@
                         android:onClick="esborrar" />
 
                 <Button
-                        android:layout_width="wrap_content"
+                        android:layout_width="78dp"
                         android:layout_height="80dp"
-                        android:id="@+id/btTargeta"
+                        android:id="@+id/btEditar"
                         android:layout_weight="1"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -317,16 +312,16 @@
                         android:textColor="@color/black"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"
-                        android:onClick="crearTargeta"
-                        app:icon="@android:drawable/ic_menu_gallery"
+                        android:onClick="editar"
+                        app:icon="@android:drawable/ic_menu_edit"
                         app:iconSize="50sp"
                         app:iconTint="#000000"
                         android:height="200dp" />
 
                 <Button
-                        android:layout_width="wrap_content"
+                        android:layout_width="75dp"
                         android:layout_height="80dp"
-                        android:id="@+id/btMail"
+                        android:id="@+id/btBuscar"
                         android:layout_weight="1"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
@@ -334,14 +329,14 @@
                         android:textColor="@color/black"
                         android:layout_marginTop="5dp"
                         android:textSize="10sp"
-                        android:onClick="email"
-                        app:icon="@android:drawable/ic_dialog_email"
+                        android:onClick="buscar"
+                        app:icon="@android:drawable/ic_menu_search"
                         app:iconSize="50sp"
                         app:iconTint="#000000"
                         android:height="200dp" />
 
                 <Button
-                        android:layout_width="wrap_content"
+                        android:layout_width="76dp"
                         android:layout_height="80dp"
                         android:id="@+id/btRegistrar"
                         android:layout_weight="1"
