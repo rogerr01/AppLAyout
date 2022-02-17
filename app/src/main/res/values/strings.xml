@@ -8,8 +8,8 @@
     <string name="genereText">Gènere:</string>
     <string name="homeText">Home</string>
     <string name="donaText">Dona</string>
-    <string name="tgButtonActivar">Activar</string>
-    <string name="tgButtonDesactivar">Desactivar</string>
+    <string name="tgButtonActivar">Activat</string>
+    <string name="tgButtonDesactivar">Desactivat</string>
     <string name="menuItemSortir">Sortir</string>
     <string name="inici">Inici</string>
 </resources>

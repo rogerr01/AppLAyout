@@ -299,7 +299,7 @@
                         app:iconSize="50sp"
                         app:iconTint="#000000"
                         android:height="200dp"
-                        android:onClick="esborrar" />
+                        android:onClick="esborrarRegistre" />
 
                 <Button
                         android:layout_width="78dp"
